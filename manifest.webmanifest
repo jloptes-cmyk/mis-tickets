@@ -1,0 +1,15 @@
+{
+  "name": "Mis Tickets",
+  "short_name": "Mis Tickets",
+  "description": "Organiza tickets, compras y garantías desde el móvil.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#172033",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
