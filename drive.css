@@ -1,0 +1,27 @@
+.drive-status.connected i {
+  background: #2e9a5f;
+  box-shadow: 0 0 0 5px #bfe7cc66;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.success-note {
+  padding: 10px;
+  border-radius: 12px;
+  background: #e6f6eb;
+  color: #216b42;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.drive-actions {
+  display: grid;
+  gap: 7px;
+}
+
+.danger-text {
+  color: #a53c30;
+}
