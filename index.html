@@ -9,6 +9,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./drive.css">
 </head>
 <body>
   <div class="app-shell">
@@ -96,8 +97,13 @@
     <div class="drive-steps"><article><span>1</span><p><b>Autorizar la cuenta</b><small>Google mostrará su pantalla oficial de permisos.</small></p></article><article><span>2</span><p><b>Crear la carpeta</b><small>Los tickets se organizarán por año y tienda.</small></p></article><article><span>3</span><p><b>Copiar automáticamente</b><small>Cada nueva compra tendrá una segunda copia.</small></p></article></div>
     <label class="setting-line"><span><b>Copia automática</b><small>Copiar al guardar una compra</small></span><input id="driveAutomatic" type="checkbox" checked></label>
     <label class="setting-line"><span><b>Nombre de la carpeta</b><small>Dentro de Mi unidad</small></span><input id="driveFolder" value="Mis Tickets" maxlength="40"></label>
-    <p class="notice">La autorización real se activará cuando el propietario configure Google Drive para esta edición pública. Mientras tanto puedes usar las copias descargables.</p>
-    <button id="saveDrivePreferences" class="primary full">Guardar configuración</button>
+    <p id="driveNotice" class="notice">Al conectar, Google mostrará su pantalla oficial para elegir una cuenta.</p>
+    <div class="drive-actions">
+      <button id="connectDrive" class="primary full">Conectar mi cuenta de Google</button>
+      <button id="syncDrive" class="outline full" hidden>Copiar tickets pendientes ahora</button>
+      <button id="saveDrivePreferences" class="ghost full">Guardar preferencias</button>
+      <button id="disconnectDrive" class="ghost full danger-text" hidden>Desconectar de este dispositivo</button>
+    </div>
   </dialog>
 
   <dialog id="detailDialog" class="modal detail-modal">
@@ -107,6 +113,7 @@
 
   <input id="importInput" type="file" accept="application/json" hidden>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="./app.js" defer></script>
 </body>
 </html>
