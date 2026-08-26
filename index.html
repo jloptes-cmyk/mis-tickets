@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#172033">
+  <meta name="description" content="Organiza tickets, compras y garantías desde el móvil.">
+  <title>Mis Tickets</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="desktop-rail" aria-label="Navegación principal">
+      <div class="brand-mark" aria-label="Mis Tickets">▤</div>
+      <nav>
+        <button data-view="inicio" class="active" aria-label="Inicio">⌂</button>
+        <button data-view="objetos" aria-label="Objetos">◇</button>
+        <button data-view="tickets" aria-label="Tickets">▤</button>
+      </nav>
+      <button data-view="ajustes" aria-label="Ajustes">⚙</button>
+    </aside>
+
+    <div class="app-content">
+      <header class="topbar">
+        <div class="brand-block"><span class="mobile-brand">▤</span><div><small>Inventario personal</small><h1>Mis Tickets</h1></div></div>
+        <div class="top-actions">
+          <button id="driveStatus" class="drive-status"><i></i><span><b>Google Drive</b><small>Pendiente</small></span><em>›</em></button>
+          <button class="avatar" data-view="ajustes" aria-label="Abrir ajustes">MT</button>
+        </div>
+      </header>
+
+      <main id="view" tabindex="-1"></main>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Navegación móvil">
+      <button data-view="inicio" class="active"><span>⌂</span>Inicio</button>
+      <button data-view="objetos"><span>◇</span>Objetos</button>
+      <button data-view="tickets"><span>▤</span>Tickets</button>
+      <button data-view="ajustes"><span>⚙</span>Ajustes</button>
+    </nav>
+  </div>
+
+  <dialog id="welcomeDialog" class="modal welcome-modal">
+    <div class="welcome-visual" aria-hidden="true"><span>▤</span><b>☁</b></div>
+    <p class="pill">Bienvenido a Mis Tickets</p>
+    <h2>Guarda tus compras y tenlas siempre localizadas</h2>
+    <p class="lead">La aplicación conserva tus datos en este dispositivo. Puedes añadir una copia personal en Drive o descargar copias de seguridad.</p>
+    <div class="benefit-list">
+      <article><span>✓</span><div><b>Archivo privado</b><small>Los datos de cada persona permanecen separados.</small></div></article>
+      <article><span>☁</span><div><b>Copia adicional en Drive</b><small>Cada usuario conectará su propia cuenta de Google.</small></div></article>
+      <article><span>⇩</span><div><b>Copia descargable</b><small>Exporta todo y restáuralo cuando lo necesites.</small></div></article>
+    </div>
+    <div class="stack-actions">
+      <button id="welcomeDrive" class="primary">Configurar Google Drive</button>
+      <button id="welcomeLater" class="ghost">Ahora no, hacerlo más tarde</button>
+    </div>
+  </dialog>
+
+  <dialog id="purchaseDialog" class="modal purchase-modal">
+    <button class="modal-close" data-close="purchaseDialog" aria-label="Cerrar">×</button>
+    <div id="purchaseStart">
+      <p class="pill">Nueva compra</p><h2>¿Cómo quieres empezar?</h2><p class="lead">Escanea el producto, fotografía el ticket o introduce los datos.</p>
+      <div class="start-options">
+        <button id="scanProduct"><span class="blue">▥</span><p><b>Escanear producto</b><small>Código EAN o QR</small></p><em>›</em></button>
+        <button data-open-form="receipt"><span class="orange">◉</span><p><b>Fotografiar ticket</b><small>Adjunta la imagen a la compra</small></p><em>›</em></button>
+        <button data-open-form="manual"><span class="gray">▤</span><p><b>Introducir manualmente</b><small>Para compras sin código</small></p><em>›</em></button>
+      </div>
+      <section id="scanner" class="scanner" hidden><video id="scannerVideo" muted playsinline></video><div class="scan-frame"></div><p id="scannerMessage">Coloca el código dentro del recuadro</p><button id="scannerManual" class="secondary">Introducir código manualmente</button></section>
+    </div>
+    <form id="purchaseForm" hidden>
+      <p class="pill">Datos de la compra</p><h2>Revisa antes de guardar</h2>
+      <div class="form-grid">
+        <label class="wide">Nombre del producto<input name="name" required placeholder="Ej. Ventilador de torre"></label>
+        <label>Marca y modelo<input name="brand" placeholder="Ej. Rowenta Eole"></label>
+        <label>Categoría<input name="category" placeholder="Ej. Climatización"></label>
+        <label>Tienda<input name="store" required placeholder="Ej. MediaMarkt"></label>
+        <label>Precio<input name="price" type="number" min="0" step="0.01" placeholder="0,00"></label>
+        <label>Fecha de compra<input name="purchaseDate" type="date" required></label>
+        <label>Años de garantía<input name="warrantyYears" type="number" min="0" max="20" value="3"></label>
+        <label>Fin de devolución<input name="returnEnd" type="date"></label>
+        <label>Código de barras<input name="barcode" inputmode="numeric" placeholder="EAN / GTIN"></label>
+        <label>Número de serie<input name="serial" placeholder="Opcional"></label>
+      </div>
+      <label class="upload-zone"><input id="receiptInput" name="receipt" type="file" accept="image/*,.pdf" capture="environment"><span>＋</span><div><b id="receiptLabel">Añadir ticket o factura</b><small>Fotografía o PDF · máximo 12 MB</small></div></label>
+      <p id="formError" class="error" hidden></p>
+      <div class="form-actions"><button type="button" id="formBack" class="ghost">Atrás</button><button type="submit" class="primary">Guardar compra</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="driveDialog" class="modal drive-modal">
+    <button class="modal-close" data-close="driveDialog" aria-label="Cerrar">×</button>
+    <div class="drive-icon">☁</div><p class="pill">Copia adicional</p><h2>Google Drive</h2>
+    <p class="lead">Cada persona conectará su propia cuenta. La aplicación creará una carpeta “Mis Tickets” y solo trabajará con los archivos que genere.</p>
+    <div class="drive-steps"><article><span>1</span><p><b>Autorizar la cuenta</b><small>Google mostrará su pantalla oficial de permisos.</small></p></article><article><span>2</span><p><b>Crear la carpeta</b><small>Los tickets se organizarán por año y tienda.</small></p></article><article><span>3</span><p><b>Copiar automáticamente</b><small>Cada nueva compra tendrá una segunda copia.</small></p></article></div>
+    <label class="setting-line"><span><b>Copia automática</b><small>Copiar al guardar una compra</small></span><input id="driveAutomatic" type="checkbox" checked></label>
+    <label class="setting-line"><span><b>Nombre de la carpeta</b><small>Dentro de Mi unidad</small></span><input id="driveFolder" value="Mis Tickets" maxlength="40"></label>
+    <p class="notice">La autorización real se activará cuando el propietario configure Google Drive para esta edición pública. Mientras tanto puedes usar las copias descargables.</p>
+    <button id="saveDrivePreferences" class="primary full">Guardar configuración</button>
+  </dialog>
+
+  <dialog id="detailDialog" class="modal detail-modal">
+    <button class="modal-close" data-close="detailDialog" aria-label="Cerrar">×</button>
+    <div id="detailContent"></div>
+  </dialog>
+
+  <input id="importInput" type="file" accept="application/json" hidden>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
