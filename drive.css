@@ -25,3 +25,17 @@ button:disabled {
 .danger-text {
   color: #a53c30;
 }
+
+.legal-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px 18px;
+  padding: 0 15px 100px;
+  color: #717987;
+  font-size: 10px;
+}
+
+.legal-links a {
+  color: inherit;
+}
